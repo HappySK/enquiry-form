@@ -21,6 +21,8 @@ export const EnquiryForm = () => {
     e.preventDefault()
     axios.post('/send', details).then((res) => {
       setResponse(res.data)
+    }).then(() => {
+      e.target.reset()
     })
   }
 

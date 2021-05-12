@@ -1,11 +1,13 @@
 const express = require('express')
 const cors = require('cors')
 const nodemailer = require('nodemailer')
+const dotenv = require('dotenv').config()
 const app = express()
 app.use(cors())
 app.use(express.json())
+// app.use(dotenv())
 
-async function main()
+async function main(req)
 {
   let testaccount = await nodemailer.createTestAccount()
   
@@ -23,18 +25,18 @@ async function main()
     from : 'sample@example.com',
     to : 'shravanyoserene1729@gmail.com',
     subject : 'Test Mail',
-    text : 'Hello this is text Test'
+    text : req.body.Feedback
   })
   
   console.log("Message Send %s", info.messageId)
   console.log("Message URL %s", nodemailer.getTestMessageUrl(info))
 }
 
-main().catch(console.error)
 
+console.log(process.env.port)
 
 app.post('/send',(req, res) => {
-  console.log(req.body)
+  main(req).catch(console.error)
   res.send('Email Sent Successfully')
 })
 
